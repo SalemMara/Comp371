@@ -1,0 +1,31 @@
+Movement of Model:
+D -> Translate Right
+A -> Translate Left
+W -> Translate Up
+S -> Translate Down
+Spacebar -> Position you to a random spot in the grid
+
+Scale of Model:
+Z -> Scale up
+X -> Scale down
+
+Rotation of whole Model Y-axis:
+R -> Rotate to the right
+F -> Rotate to the left
+
+Rotation of Hand + Raquet along Y-axis:
+M -> Rotate to the right
+N -> Rotate to the left
+
+Movement of Camera:
+Left arrow -> Camera moves to the left
+Right arrow -> Camera moves to the right
+Up arrow -> Camera moves up
+Down arrow -> Camera moves down
+Home -> Bring you to initial position of camera
+
+Zooming:
+J -> Zoom Out
+U -> Zoom In
+
+
