@@ -25,6 +25,8 @@ const char* getVertexShaderSource();
 
 const char* getFragmentShaderSource();
 
+int compileAndLinkShaders();
+
 int xAxisVertexArrayObject();
 
 int zAxisVertexArrayObject();
