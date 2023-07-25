@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include <cstdlib>
+#include <cmath>
 
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 #include <GL/glew.h>    // Include GLEW - OpenGL Extension Wrangler
@@ -16,6 +17,7 @@
 #include <glm/glm.hpp>  // GLM is an optimized math library with syntax to similar to OpenGL Shading Language
 #include <glm/gtc/matrix_transform.hpp> // include this to create transformation matrices
 #include <glm/common.hpp>
+#include  "../ThirdParty/stb_image.h"
 
 
 using namespace glm;
@@ -52,6 +54,70 @@ int top1VertexArrayObject();
 int top2VertexArrayObject();
 
 bool initContext();
+
+std::vector<float> createSphere(int prec)
+{
+	std::vector<float> sphereVertices;
+
+	const float PI = 3.14159265359f;
+	const float step = 2.0f * PI / static_cast<float>(prec);
+
+	for (int j = 0; j <= prec; ++j)
+	{
+		float theta1 = j * step;
+		float theta2 = (j + 1) * step;
+
+		for (int i = 0; i <= prec; ++i)
+		{
+			float phi1 = i * step;
+			float phi2 = (i + 1) * step;
+
+			glm::vec3 v1, v2, v3, v4;
+			v1.x = std::cos(theta1) * std::sin(phi1);
+			v1.y = std::cos(phi1);
+			v1.z = std::sin(theta1) * std::sin(phi1);
+
+			v2.x = std::cos(theta1) * std::sin(phi2);
+			v2.y = std::cos(phi2);
+			v2.z = std::sin(theta1) * std::sin(phi2);
+
+			v3.x = std::cos(theta2) * std::sin(phi2);
+			v3.y = std::cos(phi2);
+			v3.z = std::sin(theta2) * std::sin(phi2);
+
+			v4.x = std::cos(theta2) * std::sin(phi1);
+			v4.y = std::cos(phi1);
+			v4.z = std::sin(theta2) * std::sin(phi1);
+
+			// Add vertices to the vector
+			sphereVertices.push_back(v1.x);
+			sphereVertices.push_back(v1.y);
+			sphereVertices.push_back(v1.z);
+
+			sphereVertices.push_back(v2.x);
+			sphereVertices.push_back(v2.y);
+			sphereVertices.push_back(v2.z);
+
+			sphereVertices.push_back(v4.x);
+			sphereVertices.push_back(v4.y);
+			sphereVertices.push_back(v4.z);
+
+			sphereVertices.push_back(v2.x);
+			sphereVertices.push_back(v2.y);
+			sphereVertices.push_back(v2.z);
+
+			sphereVertices.push_back(v3.x);
+			sphereVertices.push_back(v3.y);
+			sphereVertices.push_back(v3.z);
+
+			sphereVertices.push_back(v4.x);
+			sphereVertices.push_back(v4.y);
+			sphereVertices.push_back(v4.z);
+		}
+	}
+
+	return sphereVertices;
+}
 
 GLFWwindow * window = NULL;
 
@@ -140,49 +206,49 @@ int main(int argc, char*argv[])
 	glEnable(GL_DEPTH_TEST);
 
 	// translate arm
-	float tA1 = 50.0f;
+	float tA1 = 0.0f;
 	float tA2 = 3.7f;
-	float tA3 = 50.0f;
+	float tA3 = 0.0f;
 
 	// translate hand
-	float tH1 = 51.0f;
+	float tH1 = 1.0f;
 	float tH2 = 5.7f;
-	float tH3 = 50.0f;
+	float tH3 = 0.0f;
 
 	// translate handle
-	float tHle1 = 51.0f;
+	float tHle1 = 1.0f;
 	float tHle2 = 7.4;
-	float tHle3 = 50.0f;
-
+	float tHle3 = 0.0f;
+	
 	// translate base1
-	float tb1 = 51.45f;
+	float tb1 = 1.45f;
 	float tb2 = 9.3f;
-	float tb3 = 50.0f;
+	float tb3 = 0.0f;
 
 	// translate base2
-	float tba1 = 50.5f;
+	float tba1 = 0.5f;
 	float tba2 = 9.3;
-	float tba3 = 50.0f;
+	float tba3 = 0.0f;
 
 	// translate mid1
-	float tm1 = 50.0f;
+	float tm1 = 0.0f;
 	float tm2 = 11.0f;
-	float tm3 = 50.0f;
+	float tm3 = 0.0f;
 
 	// translate mid2
-	float tmi1 = 52.0f;
+	float tmi1 = 2.0f;
 	float tmi2 = 11.0f;
-	float tmi3 = 50.0f;
+	float tmi3 = 0.0f;
 	
 	// translate top1
-	float tt1 = 51.45f;
+	float tt1 = 1.45f;
 	float tt2 = 12.8f;
-	float tt3 = 50.0f;
+	float tt3 = 0.0f;
 
 	// translate top2
-	float tto1 = 50.5f;
+	float tto1 = 0.5f;
 	float tto2 = 12.8f;
-	float tto3 = 50.0f;
+	float tto3 = 0.0f;
 
 	// scale arm
 	float sA1 = 0.5f;
@@ -279,11 +345,31 @@ int main(int argc, char*argv[])
 
 	float randomX = 0.0f;
 	float randomZ = 0.0f;
-		//rand() / static_cast<float>(RAND_MAX);
-	 //std::cout << random << std::endl;
 
 	static GLenum renderType = GL_TRIANGLES;
 
+	// Create sphere vertices
+	std::vector<float> sphereVertices;
+	int precision = 30; // Adjust this value for smoother or rougher sphere
+	sphereVertices = createSphere(precision);
+
+	// Vertex buffer and array objects
+	unsigned int VBO, VAO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO);
+
+	// Bind VBO and send sphere data to the GPU
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sphereVertices.size() * sizeof(float), sphereVertices.data(), GL_STATIC_DRAW);
+
+	// Set vertex attribute pointers
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 
 	// Entering Game Loop
 	while (!glfwWindowShouldClose(window))
@@ -292,18 +378,35 @@ int main(int argc, char*argv[])
 		float dt = glfwGetTime() - lastFrameTime;
 		lastFrameTime += dt;
 
+		glUseProgram(shaderProgram);
+
 		// Each frame, reset color of each pixel to glClearColor
 
 		// @TODO 1 - Clear Depth Buffer Bit as well
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
+		glBindVertexArray(VAO);
+		// Your OpenGL drawing code goes here
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 0.0f, 1.0f, 0.0f);
+		mat4 sphereWorldMatrix = translate(mat4(10.0f), vec3(2.5f, 5.00f, 0.0f)) * scale(mat4(1.0f), vec3(1.0f, 1.0f, 1.0f));
+		GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &sphereWorldMatrix[0][0]);
+		
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glMultMatrixf(glm::value_ptr(sphereWorldMatrix));
+
+		glDrawArrays(GL_TRIANGLES, 0, sphereVertices.size() / 3);
+		glBindVertexArray(0);
+
 		// Draw geometry
 		glBindVertexArray(xVao);
 		
 		//creating the x-axis
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 0.0f, 0.0f);
 		mat4 xAxisWorldMatrix = translate(mat4(10.0f), vec3(2.5f, 0.00f,0.0f)) * scale(mat4(10.0f), vec3(5, 0.1f, 0.1f));
-		GLuint worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
+		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &xAxisWorldMatrix[0][0]);
 
 		glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -311,7 +414,7 @@ int main(int argc, char*argv[])
 		//creating the z-axis
 		glBindVertexArray(zVao);
 
-		
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 0.0f, 1.0f, 0.0f);
 		mat4 zAxisWorldMatrix = translate(mat4(10.0f), vec3(0.0f, 0.0f, 2.5f)) * scale(mat4(1.0f), vec3(0.1f, 0.1f, 5));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &zAxisWorldMatrix[0][0]);
@@ -320,8 +423,8 @@ int main(int argc, char*argv[])
 
 		//creating the y-axis
 		glBindVertexArray(yVao);
-
 		
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 0.0f, 0.0f, 1.0f);
 		mat4 yAxisWorldMatrix = translate(mat4(10.0f), vec3(0.0f, 2.5f, 0.0f)) * scale(mat4(1.0f), vec3(0.1f, 5, 0.1f));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &yAxisWorldMatrix[0][0]);
@@ -333,6 +436,7 @@ int main(int argc, char*argv[])
 
 		mat4 new_rot = rotate(mat4(1.0f), glm::radians(angle), vec3(0.0f, 1.0f, 0.0f));
 
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 0.93f, 0.86f, 0.61f);
 		//mat4 armWorldMatrix = translate(mat4(10.0f), vec3(tA1, tA2, tA3)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(45.0f, 0.0f, -180.0f)) * scale(mat4(1.0f), vec3(sA1, sA2, sA3));
 		mat4 armWorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tA1) + randomX, (s*tA2), (s*tA3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rA1, rA2, rA3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sA1, sA2, sA3));
 		//mat4 armWorldMatrix = translate(mat4(10.0f), vec3((s*tA1) + randomX, (angle*(s*tA2)), (s*tA3) + randomZ)) * new_rot * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sA1, sA2, sA3));
@@ -343,8 +447,8 @@ int main(int argc, char*argv[])
 
 		//creating hand model
 		glBindVertexArray(handVao);
-		// scale hand	
-		
+
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 0.93f, 0.86f, 0.61f);
 		//mat4 handWorldMatrix = translate(mat4(10.0f), vec3(tH1, tH2, tH3)) * rotate(mat4(1.0f), glm::radians(90.0f), vec3(0.0f, 10.0f, 0.0f)) * scale(mat4(1.0f), vec3(sH1, sH2, sH3));
 		mat4 handWorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tH1)+randomX, (s*tH2), (s*tH3)+ randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rH1, rH2, rH3)) * scale(mat4(1.0f), vec3(s, s, s)) *glm::scale(mat4(1.0f), vec3(sH1, sH2, sH3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
@@ -355,7 +459,7 @@ int main(int argc, char*argv[])
 		//create handle model
 		glBindVertexArray(handleVao);
 
-		
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 0.0f, 0.0f);
 		mat4 handleWorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tHle1) + randomX, (s*tHle2), (s*tHle3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rHle1, rHle2, rHle3)) * scale(mat4(1.0f),vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sHle1, sHle2, sHle3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &handleWorldMatrix[0][0]);
@@ -365,7 +469,7 @@ int main(int argc, char*argv[])
 		//create base1 model
 		glBindVertexArray(base1Vao);
 
-		
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 1.0f, 1.0f);
 		mat4 base1WorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tb1) + randomX, (s*tb2), (s*tb3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rb1, rb2, rb3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sb1, sb2, sb3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &base1WorldMatrix[0][0]);
@@ -375,6 +479,7 @@ int main(int argc, char*argv[])
 		//create base2 model
 		glBindVertexArray(base2Vao);
 		
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 1.0f, 1.0f);
 		mat4 base2WorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tba1) + randomX, (s*tba2), (s*tba3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rba1, rba2, rba3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sba1, sba2, sba3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &base2WorldMatrix[0][0]);
@@ -386,6 +491,7 @@ int main(int argc, char*argv[])
 		// create mid1 model
 		glBindVertexArray(mid1Vao);
 
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 0.0f, 0.0f);
 		mat4 mid1WorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tm1) + randomX, (s*tm2), (s*tm3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rm1, rm2, rm3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sm1, sm2, sm3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &mid1WorldMatrix[0][0]);
@@ -395,6 +501,7 @@ int main(int argc, char*argv[])
 		// create mid2 model
 		glBindVertexArray(mid2Vao);
 
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 0.0f, 0.0f);
 		mat4 mid2WorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tmi1) + randomX, (s*tm2), (s*tm3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rmi1, rmi2, rmi3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(smi1, smi2, smi3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &mid2WorldMatrix[0][0]);
@@ -404,7 +511,7 @@ int main(int argc, char*argv[])
 		//create top1 model
 		glBindVertexArray(top1Vao);
 
-
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 1.0f, 1.0f);
 		mat4 top1WorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tt1) + randomX, (s*tt2), (s*tt3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rt1, rt2, rt3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(st1, st2, st3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &top1WorldMatrix[0][0]);
@@ -414,15 +521,15 @@ int main(int argc, char*argv[])
 		//create top2 model
 		glBindVertexArray(top2Vao);
 
-
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 1.0f, 1.0f);
 		mat4 top2WorldMatrix = new_rot * translate(mat4(10.0f), vec3((s*tto1) + randomX, (s*tto2), (s*tto3) + randomZ)) * rotate(mat4(1.0f), glm::radians(45.0f), vec3(rto1, rto2, rto3)) * scale(mat4(1.0f), vec3(s, s, s)) * glm::scale(mat4(1.0f), vec3(sto1, sto2, sto3));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &top2WorldMatrix[0][0]);
 
 		glDrawArrays(renderType, 0, 36);
 
-
 		//creating the ground lines
+		glUniform3f(glGetUniformLocation(shaderProgram, "color"), 1.0f, 1.0f, 0.0f);
 		mat4 groundWorldMatrix = translate(mat4(1.0f), vec3(-50.0f, -0.01f, -50.0f)) * scale(mat4(1.0f), vec3(100, 0.5f, 100));
 		worldMatrixLocation = glGetUniformLocation(shaderProgram, "worldMatrix");
 		glUniformMatrix4fv(worldMatrixLocation, 1, GL_FALSE, &groundWorldMatrix[0][0]);
@@ -835,7 +942,8 @@ const char* getFragmentShaderSource()
 		" uniform vec3 color ; "
 		"void main()"
 		"{"
-		"  FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f); "
+		//"  FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f); "
+		" FragColor = vec4(color, 1.0); "
 		"}";
 
 	//FragColor = vec4(vertexColor.r, vertexColor.g, vertexColor.b, 1.0f) ; 
@@ -1951,7 +2059,6 @@ int top2VertexArrayObject()
 
 	return vertexArrayObject;
 }
-
 
 bool initContext() {     // Initialize GLFW and OpenGL version
 	glfwInit();

@@ -1,25 +1,22 @@
 ﻿  Source.cpp
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(129): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(154): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(164): warning C4305: 'initializing': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(292): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(530): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(531): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(542): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(543): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(554): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(555): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(566): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(567): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(578): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(579): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(593): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(594): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(694): warning C4305: '+=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(702): warning C4305: '-=': truncation from 'double' to 'float'
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(736): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-d:\github\comp371\assignment 1\lab01\lab_framework\source\source.cpp(737): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-glew32s.lib(glew.obj) : warning LNK4099: PDB 'vc120.pdb' was not found with 'glew32s.lib(glew.obj)' or at 'D:\Github\Comp371\Assignment 1\Lab01\Lab_Framework\Bin\vc120.pdb'; linking object as if no debug info
-  Labs.vcxproj -> D:\Github\Comp371\Assignment 1\Lab01\Lab_Framework\VS2017\/../Bin/Labs-Debug.exe
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(195): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(220): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(230): warning C4305: 'initializing': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(378): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(637): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(638): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(649): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(650): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(661): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(662): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(673): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(674): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(685): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(686): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(700): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(701): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(801): warning C4305: '+=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(809): warning C4305: '-=': truncation from 'double' to 'float'
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(843): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+d:\github\comp371\assignment 2\lab01\lab_framework\source\source.cpp(844): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+  Labs.vcxproj -> D:\Github\Comp371\Assignment 2\Lab01\Lab_Framework\VS2017\/../Bin/Labs-Debug.exe
